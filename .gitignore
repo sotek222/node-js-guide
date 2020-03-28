@@ -1,0 +1,7 @@
+# ignores all node module folders in any directory
+node_modules/
+
+# ignores all package-lock files in any directory
+package-lock.json
+
+text_files/
