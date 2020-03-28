@@ -1,20 +1,22 @@
-// Express Modules
+const htmlFiller = require('./helper');
+
+// Routes:
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+// Express Modules:
 const express = require('express');
+const bodyParser = require('body-parser');
 
-console.log("Express Server Started");
+
+
 const app = express();
+console.log("Express Server Started");
 
-app.use("/hello", (req, resp, next) => {
-  resp.send("<h2>Hello</h2>")
-});
-
-
-app.use("/", (req, resp, next) => {
-  next();
-});
+app.use(bodyParser.urlencoded({extended: false}))
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 app.use((req, resp, next) => {
-  console.log("In next Middleware");
-  resp.send("<h1>Hello from express!!</h1>");
-});
-
+  resp.status(404).send(htmlFiller('<div><h1>404 Not Found</h1></div>', '404'))
+})
 app.listen(3000);
