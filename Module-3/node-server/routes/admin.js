@@ -1,14 +1,9 @@
 const Router = require('express').Router();
-const htmlFiller = require('../helper');
+const path = require('path');
+const rootDir = require('../util/path');
 
 Router.get("/add-product", (req, resp, next) => {
-  resp.send(htmlFiller(`
-    <h1>Add a Product</h1>
-    <form action="/admin/product" method="POST">
-      <input type="text" name="product"/>
-      <button type="submit">Submit a Product</button>
-    </form>
-  `));
+  resp.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 });
 
 Router.post("/product", (req, resp, next) => {
