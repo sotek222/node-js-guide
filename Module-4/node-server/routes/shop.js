@@ -8,14 +8,21 @@ Router.get("/", (req, resp, next) => {
   // resp.sendFile(path.join(rootDir, 'views', 'shop.html'));
   // render is used instead of send file here, becuase we are sending
   // a .pug template which will then become html 
-  resp.render('shop', { 
-    products, 
-    pageTitle: 'Shop', 
-    shopActive: true, 
-    hasProducts: products.length > 0,
-    formsCSS: true,
-    productsCSS: true
+  resp.render('shop', {
+    products,
+    pageTitle: 'Shop',
+    shopActive: true,
   });
+
+  // render with object setup for Handlebars
+  // resp.render('shop', { 
+  //   products, 
+  //   pageTitle: 'Shop', 
+  //   shopActive: true, 
+  //   hasProducts: products.length > 0,
+  //   formsCSS: true,
+  //   productsCSS: true
+  // });
 });
 
 module.exports = Router;

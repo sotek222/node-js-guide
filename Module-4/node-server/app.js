@@ -18,20 +18,21 @@ const app = express();
 // Because express does not have built in support for handlebars 
 // we have to set it up here. 
 // the first argument can be anything you want
-app.engine('handlebars', expressHB({layoutsDir: 'views/layouts', defaultLayout: 'main-layout'}));
+// app.engine('handlebars', expressHB({layoutsDir: 'views/layouts', defaultLayout: 'main-layout'}));
 
 // Here we tell express which view engine to use. 
-// express has built-in support for pug
+// express has built-in support for pug && ejs
+app.set('view engine', 'ejs');
 // app.set('view engine', 'pug');
-app.set('view engine', 'handlebars');
+// app.set('view engine', 'handlebars');
 // sets the views folder 
 // first arg: is the key to set
-// secodn arg: is the name of the directory to look for
+// second arg: is the name of the directory to look for
 app.set('views', 'views');
 
 // Allows for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

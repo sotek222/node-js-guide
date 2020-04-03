@@ -6,12 +6,14 @@ const products = [];
 
 Router.get("/add-product", (req, resp, next) => {
   // resp.sendFile(path.join(rootDir, 'views', 'add-product.html'));
-  resp.render('add-product', { 
-    pageTitle: "Add Product", 
-    productActive: true,
-    formsCSS: true,
-    productCSS: true
-  });
+  resp.render('add-product', { pageTitle: "Add Product", productActive: true });
+  // Render with object setup for Handlebars
+  // resp.render('add-product', { 
+  //   pageTitle: "Add Product", 
+  //   productActive: true,
+  //   formsCSS: true,
+  //   productCSS: true
+  // });
 });
 
 Router.post("/add-product", (req, resp, next) => {
