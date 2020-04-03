@@ -12,6 +12,7 @@ Router.get("/", (req, resp, next) => {
     products,
     pageTitle: 'Shop',
     shopActive: true,
+    path: '/'
   });
 
   // render with object setup for Handlebars

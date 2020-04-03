@@ -6,7 +6,7 @@ const products = [];
 
 Router.get("/add-product", (req, resp, next) => {
   // resp.sendFile(path.join(rootDir, 'views', 'add-product.html'));
-  resp.render('add-product', { pageTitle: "Add Product", productActive: true });
+  resp.render('add-product', { pageTitle: "Add Product", path: '/admin/add-product'});
   // Render with object setup for Handlebars
   // resp.render('add-product', { 
   //   pageTitle: "Add Product", 
