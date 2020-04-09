@@ -12,12 +12,14 @@ function postAddProduct(req, resp, next) {
 }
 
 function getProducts(req, resp, next) {
-  resp.render('shop', {
-    products: Product.fetchAll(),
-    pageTitle: 'Shop',
-    shopActive: true,
-    path: '/'
-  });
+  Product.fetchAll((products) => {
+    resp.render('shop', {
+      products,
+      pageTitle: 'Shop',
+      shopActive: true,
+      path: '/'
+    });
+  })
 }
 
 module.exports = {
