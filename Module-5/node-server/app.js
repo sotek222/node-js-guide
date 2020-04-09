@@ -4,6 +4,7 @@ const path = require('path');
 // Routes:
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const resourceNotFound = require('./controllers/error');
 
 // Express Modules:
 const express = require('express');
@@ -22,8 +23,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, resp, next) => {
-  resp.status(404).render('404', { pageTitle: '404' });
-});
+app.use(resourceNotFound);
 
 app.listen(3000);
