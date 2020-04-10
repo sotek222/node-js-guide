@@ -1,6 +1,15 @@
 const Router = require('express').Router();
-const { getProducts } = require('../controllers/product');
+const { getShopProducts, getIndexProducts, getCart, getCheckout } = require('../controllers/shop');
 
-Router.get("/", getProducts);
+// GET => Index
+Router.get("/", getShopProducts);
+// GET => Products
+Router.get("/products", getIndexProducts);
+
+// GET => Cart
+Router.get("/cart", getCart);
+
+// GET => Checkout
+Router.get("/checkout", getCheckout);
 
 module.exports = Router;
