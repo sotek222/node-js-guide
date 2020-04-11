@@ -2,5 +2,16 @@
 
 <body>
   <%- include('../partials/navigation.ejs')%>
-  <h1>Admin Edit Product</h1>
+  <div>
+    <h2>
+      Edit Page for <%=product.title%>
+    </h2>
+    <form action="">
+      <input type="text" value="<%= product.title %>">
+      <input type="text" value="<%= product.imageUrl %>">
+      <input type="number" step="0.01" value="<%= product.price %>">
+      <textarea name="description" ><%=product.description%></textarea>
+    </form>
+  </div>
+
 <%- include('../partials/end.ejs')%>
