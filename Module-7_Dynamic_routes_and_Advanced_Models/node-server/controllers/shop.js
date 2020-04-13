@@ -44,11 +44,10 @@ function getOrders(req, resp, next) {
 
 function getProductDetails(req, resp, next){
   const { id } = req.params;
-  Product.fetchAll(products => {
-    const foundProduct = products.find(product => product.id === id);
+  Product.findById(id, product => {
     resp.render('shop/product-detail', {
-      product: foundProduct,
-      pageTitle: `${foundProduct.title} Details`,
+      product,
+      pageTitle: `${product.title} Details`,
       path: ""
     });
   });
