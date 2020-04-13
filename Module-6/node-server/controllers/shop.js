@@ -35,9 +35,17 @@ function getCheckout(req, resp, next) {
   });
 };
 
+function getOrders(req, resp, next) {
+  resp.render('shop/orders', {
+    path: "/orders",
+    pageTitle: "Your Orders"
+  })
+};
+
 module.exports = {
   getShopProducts,
   getIndexProducts,
   getCart,
-  getCheckout
+  getCheckout,
+  getOrders
 };

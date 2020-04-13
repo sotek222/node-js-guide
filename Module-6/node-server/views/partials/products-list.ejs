@@ -17,9 +17,13 @@
       <div class="card__actions">
         <% if(path === "/admin/products"){ %>
           <button class="btn"><a href="/admin/<%= product.title%>/edit"</a>Edit</a></button>
-          <button class="btn">Delete</button>
+          <form action="/admin/delete-product" method="post">
+            <button type="submit" class="btn">Delete</button>
+          </form>
         <%} else {%>
-            <button class="btn">Add to Cart</button>
+          <form action="/add-to-cart" method="post">
+            <button type="submit" class="btn">Add to Cart</button>
+          </form>
         <%};%>
       </div>
     </article>
