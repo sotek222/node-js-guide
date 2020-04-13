@@ -27,11 +27,10 @@ function getProducts(req, resp, next) {
 
 function getEditProduct(req, resp, next){
   const { id } = req.params;
-  Product.fetchAll(products => {
-    const foundProduct = products.find(product => product.id === id);
+  Product.findById(id, product => {
     resp.render('admin/edit-product', {
-      product: foundProduct,
-      pageTitle: `Edit ${foundProduct.title}`,
+      product,
+      pageTitle: `Edit ${product.title}`,
       path: "/edit-product"
     })
   });
