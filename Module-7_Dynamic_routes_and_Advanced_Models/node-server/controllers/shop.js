@@ -48,7 +48,7 @@ function getProductDetails(req, resp, next){
     resp.render('shop/product-detail', {
       product,
       pageTitle: `${product.title} Details`,
-      path: ""
+      path: "/products"
     });
   });
 };

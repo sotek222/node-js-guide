@@ -8,11 +8,17 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Open Sans', sans-serif;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
 }
 
 main {
   padding: 1rem;
   margin: auto;
+}
+
+.centered {
+  text-align: center;
 }
 
 form {
