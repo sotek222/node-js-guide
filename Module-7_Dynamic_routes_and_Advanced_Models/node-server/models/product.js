@@ -15,6 +15,7 @@ const getProductsFromFile = (cb) => {
 
 class Product {
   constructor(title, imageUrl, description, price){
+    this.id = null;
     this.title = title; 
     this.imageUrl = imageUrl;
     this.description = description;
@@ -23,6 +24,15 @@ class Product {
 
   save(){
     getProductsFromFile((products, p) => {
+      const lastProd = products[products.length - 1];
+
+      if(lastProd){
+        const newId = parseInt(lastProd.id) + 1;
+        this.id = newId;
+      } else {
+        this.id = "1";
+      };
+
       products.push(this);
       fs.writeFile(p, 
         JSON.stringify(products), 
