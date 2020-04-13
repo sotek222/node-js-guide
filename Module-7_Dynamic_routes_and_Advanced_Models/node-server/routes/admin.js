@@ -10,6 +10,6 @@ Router.post("/add-product", postAddProduct);
 // GET => Products List
 Router.get("/products", getProducts);
 
-Router.get("/:title/edit", getEditProduct)
+Router.get("/:id/edit", getEditProduct)
 
 module.exports = Router;

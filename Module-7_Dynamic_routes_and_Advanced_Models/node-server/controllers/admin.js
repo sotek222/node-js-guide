@@ -26,9 +26,9 @@ function getProducts(req, resp, next) {
 };
 
 function getEditProduct(req, resp, next){
-  const { title } = req.params;
+  const { id } = req.params;
   Product.fetchAll(products => {
-    const foundProduct = products.find(product => product.title === title);
+    const foundProduct = products.find(product => product.id === id);
     resp.render('admin/edit-product', {
       product: foundProduct,
       pageTitle: `Edit ${foundProduct.title}`,
