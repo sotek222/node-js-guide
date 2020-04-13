@@ -42,10 +42,23 @@ function getOrders(req, resp, next) {
   })
 };
 
+function getProductDetails(req, resp, next){
+  const { id } = req.params;
+  Product.fetchAll(products => {
+    const foundProduct = products.find(product => product.id === id);
+    resp.render('shop/product-detail', {
+      product: foundProduct,
+      pageTitle: `${foundProduct.title} Details`,
+      path: ""
+    });
+  });
+};
+
 module.exports = {
   getShopProducts,
   getIndexProducts,
   getCart,
   getCheckout,
-  getOrders
+  getOrders,
+  getProductDetails
 };

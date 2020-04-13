@@ -28,7 +28,7 @@ class Product {
 
       if(lastProd){
         const newId = parseInt(lastProd.id) + 1;
-        this.id = newId;
+        this.id = newId.toString();
       } else {
         this.id = "1";
       };
