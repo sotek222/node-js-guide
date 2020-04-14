@@ -1,6 +1,5 @@
-
+const Cart = require('../models/cart');
 const Product = require('../models/product');
-const cart = [];
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
   Product.fetchAll(products => {
@@ -34,20 +33,19 @@ function getProductDetails(req, resp, next){
 };
 
 function getCart(req, resp, next) {
-  console.log("CART: ", cart);
   resp.render('shop/cart', {
-    cart,
     pageTitle: "Your Cart",
     path: "/cart",
+    cart: []
   });
 };
 
 function postCart(req, resp, next){
   const { productId } = req.body; 
   Product.findById(productId, product => {
-    cart.push(product);
-    resp.redirect("/cart");
-  })
+    Cart.addProduct(product.id, product.price);
+    resp.redirect('/cart');
+  });
 };
 
 function getCheckout(req, resp, next) {
