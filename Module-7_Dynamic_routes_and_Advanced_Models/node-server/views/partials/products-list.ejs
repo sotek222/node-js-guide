@@ -22,9 +22,7 @@
           </form>
         <%} else {%>
           <a href="/products/<%= product.id %>" class="btn">Details</a>
-          <form action="/add-to-cart" method="POST">
-            <button type="submit" class="btn">Add to Cart</button>
-          </form>
+          <%- include('./add-to-cart.ejs', { product })%>
         <%};%>
       </div>
     </article>

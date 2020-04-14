@@ -4,6 +4,7 @@ const {
   getIndexProducts, 
   getProductDetails,
   getCart, 
+  postCart,
   getCheckout, 
   getOrders } = require('../controllers/shop');
 
@@ -14,6 +15,9 @@ Router.get("/products", getIndexProducts);
 
 // GET => Cart
 Router.get("/cart", getCart);
+
+// POST => Cart
+Router.post("/cart", postCart);
 
 // GET => Checkout
 Router.get("/checkout", getCheckout);

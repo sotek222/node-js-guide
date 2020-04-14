@@ -2,5 +2,17 @@
 
 <body>
   <%- include('../partials/navigation.ejs')%>
-  <h1>Cart</h1>
+  <div>
+    <h1>Your Cart:</h1>
+    <% if(cart.length){%> 
+      <% for(let product of cart){ %>
+        <div>
+          <h3><%= product.title %></h3>
+          <span>$<%= product.price %></span>
+        </div>
+      <%}%>
+    <% } else { %>
+      <h2>Nothing in Cart</h2>
+    <% } %>
+  </div>
   <%- include('../partials/end.ejs')%>
