@@ -2,9 +2,10 @@ const Product = require('../models/product');
 
 // Admin Controllers:
 function getAddProduct(req, resp, next) {
-  resp.render('admin/add-product', {
+  resp.render('admin/product-form', {
     pageTitle: "Add Product",
-    path: "/admin/add-product"
+    path: "/admin/add-product",
+    editing: false,
   });
 };
 
@@ -28,10 +29,11 @@ function getProducts(req, resp, next) {
 function getEditProduct(req, resp, next){
   const { id } = req.params;
   Product.findById(id, product => {
-    resp.render('admin/edit-product', {
+    resp.render('admin/product-form', {
       product,
       pageTitle: `Edit ${product.title}`,
-      path: "/edit-product"
+      path: "/edit-product",
+      editing: true
     })
   });
 
