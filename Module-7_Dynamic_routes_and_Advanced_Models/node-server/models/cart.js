@@ -24,7 +24,23 @@ class Cart {
       cart.totalPrice = parseInt(cart.totalPrice) + parseInt(productPrice);
       
       fs.writeFile(p, JSON.stringify(cart), err => console.log("ERROR:", err));
-    })
+    });
+  }
+
+  static deleteById(id, price){
+    fs.readFile(p, (err, fileContent) => {
+      // in case we dont find a cart
+      if(err){
+        return;
+      } else {
+        const cart = JSON.parse(fileContent);
+        const productToBeDeleted = cart.products.find(product => product.id === id);
+        const amountToSubtract = productToBeDeleted.qty * price;
+        cart.totalPrice = cart.totalPrice - amountToSubtract;
+        cart.products = cart.products.filter(product => product.id !== id);
+        fs.writeFile(p, JSON.stringify(cart), err => console.log("ERROR: ", err));
+      };
+    });
   }
 }
 

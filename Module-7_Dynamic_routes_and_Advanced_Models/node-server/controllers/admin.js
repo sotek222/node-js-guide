@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 // Admin Controllers:
 function getAddProduct(req, resp, next) {
