@@ -50,13 +50,19 @@ function postEditProduct(req, resp, next){
   const product = new Product(id, title, imageUrl, description, price);
   product.save();
   resp.redirect('/admin/products');
-
 };
+
+function deleteProduct(req, resp, next){
+  const { id } = req.params;
+  Product.delete(id);
+  resp.redirect('/admin/products');
+}
 
 module.exports = {
   getAddProduct,
   postAddProduct,
   getProducts,
   getEditProduct,
-  postEditProduct
+  postEditProduct,
+  deleteProduct
 }

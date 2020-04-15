@@ -45,6 +45,15 @@ class Product {
     });
   }
 
+  static delete(id, cb){
+    getProductsFromFile((products, p) => {
+      products = products.filter(product => product.id !== id);
+      fs.writeFile(p,
+        JSON.stringify(products),
+        (err) => err ? console.log("IN WRITE", err) : null);
+    });
+  }
+
   static fetchAll(cb){
     getProductsFromFile(cb);
   }
@@ -52,7 +61,6 @@ class Product {
   static findById(id, cb){
     getProductsFromFile(products => {
       const foundProduct = products.find(product => product.id === id);
-      console.log("found Product", foundProduct);
       cb(foundProduct);
     });
   }
