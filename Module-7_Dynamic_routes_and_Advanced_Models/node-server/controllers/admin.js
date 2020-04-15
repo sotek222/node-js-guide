@@ -11,7 +11,7 @@ function getAddProduct(req, resp, next) {
 
 function postAddProduct(req, resp, next) {
   const { title, imageUrl, description, price } = req.body;
-  const product = new Product(title, imageUrl, description, price);
+  const product = new Product(null, title, imageUrl, description, price);
   product.save();
   resp.redirect('/');
 };
@@ -28,14 +28,28 @@ function getProducts(req, resp, next) {
 
 function getEditProduct(req, resp, next){
   const { id } = req.params;
+  const editMode = req.query.edit;
+
+  if(!editMode){
+    resp.redirect('/');
+  };
+
   Product.findById(id, product => {
     resp.render('admin/product-form', {
       product,
       pageTitle: `Edit ${product.title}`,
       path: "/edit-product",
-      editing: true
+      editing: editMode
     })
   });
+};
+
+function postEditProduct(req, resp, next){
+  const { id } = req.params;
+  const { title, imageUrl, description, price } = req.body;
+  const product = new Product(id, title, imageUrl, description, price);
+  product.save();
+  resp.redirect('/admin/products');
 
 };
 
@@ -43,5 +57,6 @@ module.exports = {
   getAddProduct,
   postAddProduct,
   getProducts,
-  getEditProduct
+  getEditProduct,
+  postEditProduct
 }

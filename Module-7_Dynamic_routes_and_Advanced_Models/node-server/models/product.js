@@ -14,8 +14,8 @@ const getProductsFromFile = (cb) => {
 };
 
 class Product {
-  constructor(title, imageUrl, description, price){
-    this.id = null;
+  constructor(id, title, imageUrl, description, price){
+    this.id = id;
     this.title = title; 
     this.imageUrl = imageUrl;
     this.description = description;
@@ -24,16 +24,21 @@ class Product {
 
   save(){
     getProductsFromFile((products, p) => {
-      const lastProd = products[products.length - 1];
-
-      if(lastProd){
-        const newId = parseInt(lastProd.id) + 1;
-        this.id = newId.toString();
+      if (this.id) {
+        const foundIndex = products.findIndex(product => product.id === this.id);
+        products[foundIndex] = {...this};
       } else {
-        this.id = "1";
+        const lastProd = products[products.length - 1];
+  
+        if(lastProd){
+          const newId = parseInt(lastProd.id) + 1;
+          this.id = newId.toString();
+        } else {
+          this.id = "1";
+        };
+  
+        products.push(this);
       };
-
-      products.push(this);
       fs.writeFile(p, 
         JSON.stringify(products), 
         (err) => err ? console.log("IN WRITE", err) : null);
@@ -47,6 +52,7 @@ class Product {
   static findById(id, cb){
     getProductsFromFile(products => {
       const foundProduct = products.find(product => product.id === id);
+      console.log("found Product", foundProduct);
       cb(foundProduct);
     });
   }
