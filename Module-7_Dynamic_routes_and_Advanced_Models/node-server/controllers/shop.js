@@ -33,11 +33,26 @@ function getProductDetails(req, resp, next){
 };
 
 function getCart(req, resp, next) {
-  resp.render('shop/cart', {
-    pageTitle: "Your Cart",
-    path: "/cart",
-    cart: []
+  Cart.getCart(cart => {
+    Product.fetchAll(products => {
+      const cartProducts = [];
+      for (const product of products) {
+        const foundProduct = cart.products.find(prod => prod.id === product.id)
+        if (foundProduct){
+          cartProducts.push({ ...product, qty: foundProduct.qty});
+        };
+      };
+
+
+      resp.render('shop/cart', {
+        pageTitle: "Your Cart",
+        path: "/cart",
+        cart: cartProducts,
+        totalPrice: cart.totalPrice
+      });
+    })
   });
+
 };
 
 function postCart(req, resp, next){

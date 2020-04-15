@@ -8,9 +8,11 @@
       <% for(let product of cart){ %>
         <div>
           <h3><%= product.title %></h3>
-          <span>$<%= product.price %></span>
+          <span>Price: $<%= product.price %></span>
+          <span>Quantity: <%= product.qty %></span>
         </div>
       <%}%>
+      <h1>Total: $<%= totalPrice %></h1>
     <% } else { %>
       <h2>Nothing in Cart</h2>
     <% } %>
