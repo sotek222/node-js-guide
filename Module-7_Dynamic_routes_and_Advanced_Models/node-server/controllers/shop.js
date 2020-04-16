@@ -65,10 +65,10 @@ function postCart(req, resp, next){
 
 function deleteCartProduct(req, resp, next){
   const { id } = req.params;
-  const productPrice = req.body.price;
-
-  Cart.deleteById(id, productPrice);
-  resp.redirect('/cart');
+  Product.findById(id, foundProduct => {
+    Cart.deleteById(id, foundProduct.price);
+    resp.redirect('/cart');
+  });
 
 
 };  
