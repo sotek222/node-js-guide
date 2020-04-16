@@ -34,11 +34,13 @@ class Cart {
         return;
       } else {
         const cart = JSON.parse(fileContent);
-        const productToBeDeleted = cart.products.find(product => product.id === id);
-        const amountToSubtract = productToBeDeleted.qty * price;
-        cart.totalPrice = cart.totalPrice - amountToSubtract;
-        cart.products = cart.products.filter(product => product.id !== id);
-        fs.writeFile(p, JSON.stringify(cart), err => console.log("ERROR: ", err));
+        const foundProduct = cart.products.find(product => product.id === id);
+        if (foundProduct){
+          const amountToSubtract = foundProduct.qty * price;
+          cart.totalPrice = cart.totalPrice - amountToSubtract;
+          cart.products = cart.products.filter(product => product.id !== id);
+          fs.writeFile(p, JSON.stringify(cart), err => console.log("ERROR: ", err));
+        };
       };
     });
   }
