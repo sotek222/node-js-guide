@@ -63,6 +63,16 @@ function postCart(req, resp, next){
   });
 };
 
+function deleteCartProduct(req, resp, next){
+  const { id } = req.params;
+  const productPrice = req.body.price;
+
+  Cart.deleteById(id, productPrice);
+  resp.redirect('/cart');
+
+
+};  
+
 function getCheckout(req, resp, next) {
   resp.render('shop/checkout', {
     path: "/checkout",
@@ -83,6 +93,7 @@ module.exports = {
   getIndexProducts,
   getCart,
   postCart,
+  deleteCartProduct,
   getCheckout,
   getOrders,
   getProductDetails
