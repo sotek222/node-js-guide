@@ -1,0 +1,25 @@
+<%- include('../partials/head.ejs')%>
+
+<body>
+  <%- include('../partials/navigation.ejs')%>
+  <div>
+    <h1>Your Cart:</h1>
+    <% if(cart.length){%> 
+      <ul>
+        <% for(let product of cart){ %>
+          <li>
+            <p>
+              X<%=product.qty%> <%= product.title %>: $<%= product.price * product.qty%> 
+            </p>
+            <form action="/cart/delete/<%=product.id%>" method="POST">
+              <button class="btn" type="submit">Delete</button>
+            </form>
+          </li>
+        <%}%>
+      </ul>
+      <h1>Total: $<%= totalPrice %></h1>
+    <% } else { %>
+      <h2>Nothing in Cart</h2>
+    <% } %>
+  </div>
+  <%- include('../partials/end.ejs')%>

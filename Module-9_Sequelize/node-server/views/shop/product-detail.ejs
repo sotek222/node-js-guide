@@ -1,0 +1,13 @@
+<%- include('../partials/head.ejs')%>
+
+<body>
+  <%- include('../partials/navigation.ejs')%>
+  <div class="centered">
+    <h1>Product Detail</h1>
+    <h2><%= product.title %></h2>
+    <img src="<%=product.imageUrl%>" alt="product image">
+    <p><%= product.description %></p>
+    <h3>$<%= product.price % 1 === 0 ? Number(product.price).toFixed(2) : product.price %></h3>
+    <%- include('../partials/add-to-cart.ejs')%>
+  </div>
+<%- include('../partials/end.ejs')%>
