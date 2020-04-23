@@ -1,34 +1,31 @@
-// const fs = require('fs');
-// const path = require('path');
-// const rootDir = require('../util/path');
-const Cart = require('./cart');
-const dbConnector = require('../util/db');
+const Sequelize = require('sequelize');
 
-class Product {
-  constructor(id, title, imageUrl, description, price){
-    this.id = id;
-    this.title = title; 
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+const sequelize = require('../util/db');
+
+// the sequelize variable contains all of the connection 
+// pools and other resources from sequelize and mysql
+// the define method allows us to define a model in our program and 
+// a table in the DB.
+const Product = sequelize.define('product', {
+  id: {
+    type: Sequelize.INTEGER, 
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
-
-  save(){
-    return dbConnector.execute('INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)', 
-    [this.title, this.price, this.imageUrl, this.description]);
-  }
-
-  static delete(id){
-
-  }
-
-  static fetchAll(){
-    return dbConnector.execute('SELECT * FROM products')
-  }
-
-  static findById(id){
-    return dbConnector.execute('SELECT * FROM products WHERE id = ?', [id]);
-  }
-}
+});
 
 module.exports = Product;

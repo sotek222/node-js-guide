@@ -2,23 +2,22 @@ const Cart = require('../models/cart');
 const Product = require('../models/product');
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
-  Product.fetchAll()
-   .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then(products => {
       resp.render('shop/index', {
-        products: rows,
+        products,
         path: "/products",
         pageTitle: "Index"
       });
-
-   })
-   .catch(err => console.error("ERROR:", err));
+    })
+    .catch(err => console.error("ERROR: ", err));
 };
 
 function getShopProducts(req, resp, next) {
-  Product.fetchAll()
-  .then(([rows, fieldData]) => {
+  Product.findAll()
+  .then(products => {
     resp.render('shop/products', {
-      products: rows,
+      products,
       pageTitle: "Shop",
       path: "/"
     });
@@ -28,8 +27,8 @@ function getShopProducts(req, resp, next) {
 
 function getProductDetails(req, resp, next){
   const { id } = req.params;
-  Product.findById(id)
-    .then(([[product]]) => {
+  Product.findByPk(id)
+    .then((product) => {
       resp.render('shop/product-detail', {
         product,
         pageTitle: `${product.title} Details`,

@@ -1,5 +1,5 @@
 // Database
-const dbConnector = require('./util/db');
+const sequelize = require('./util/db');
 
 // Node Core Modules:
 const path = require('path');
@@ -29,4 +29,12 @@ app.use(shopRoutes);
 
 app.use(resourceNotFound);
 
-app.listen(3000);
+// This look at any models in the program
+// that use the define method and checks to see if the 
+// corresponding table exists and if it doesnt creates it
+sequelize
+  .sync()
+  .then(result => app.listen(3000))
+  .catch(err => console.error("ERROR: ", err));
+
+

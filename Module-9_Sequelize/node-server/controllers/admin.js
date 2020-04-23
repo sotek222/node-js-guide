@@ -11,21 +11,24 @@ function getAddProduct(req, resp, next) {
 
 function postAddProduct(req, resp, next) {
   const { title, imageUrl, description, price } = req.body;
-  const product = new Product(null, title, imageUrl, description, price);
-  product
-  .save()
-  .then(() => resp.redirect('/'))
-  .catch(err => console.error(err));
+  // Product.build is the same as new Product()
+  // to then save it in the db we'd have to also call .save();
+  // Product.create does both build and save
+  Product.create({ title, price, imageUrl, description})
+  .then(result => console.log("WHAT IS THIS: ", result))
+  .catch(err => console.errror("ERROR: ", err));
 };
 
 function getProducts(req, resp, next) {
-  Product.fetchAll(products => {
+  Product.findAll()
+  .then(products => {
     resp.render('admin/products', {
       products,
       pageTitle: "Admin Products",
       path: "/admin/products"
     });
-  });
+  })
+  .catch(err => console.error("ERROR: ", err));
 };
 
 function getEditProduct(req, resp, next){
