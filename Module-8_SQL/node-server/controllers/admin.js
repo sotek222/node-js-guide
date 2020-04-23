@@ -12,7 +12,10 @@ function getAddProduct(req, resp, next) {
 function postAddProduct(req, resp, next) {
   const { title, imageUrl, description, price } = req.body;
   const product = new Product(null, title, imageUrl, description, price);
-  product.save(() => resp.redirect("/"));
+  product
+  .save()
+  .then(() => resp.redirect('/'))
+  .catch(err => console.error(err));
 };
 
 function getProducts(req, resp, next) {
