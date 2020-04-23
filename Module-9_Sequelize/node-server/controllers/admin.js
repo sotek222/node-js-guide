@@ -15,7 +15,7 @@ function postAddProduct(req, resp, next) {
   // to then save it in the db we'd have to also call .save();
   // Product.create does both build and save
   Product.create({ title, price, imageUrl, description})
-  .then(result => console.log("WHAT IS THIS: ", result))
+  .then(() => resp.redirect('/admin/products'))
   .catch(err => console.errror("ERROR: ", err));
 };
 
@@ -39,28 +39,41 @@ function getEditProduct(req, resp, next){
     resp.redirect('/');
   };
 
-  Product.findById(id, product => {
-    resp.render('admin/product-form', {
-      product,
-      pageTitle: `Edit ${product.title}`,
-      path: "/edit-product",
-      editing: editMode
-    })
-  });
+  Product.findByPk(id)
+    .then(product => {
+      resp.render('admin/product-form', {
+        product,
+        pageTitle: `Edit ${product.title}`,
+        path: "/edit-product",
+        editing: editMode
+      })
+    });
 };
 
 function postEditProduct(req, resp, next){
   const { id } = req.params;
   const { title, imageUrl, description, price } = req.body;
-  const product = new Product(id, title, imageUrl, description, price);
-  product.save();
-  resp.redirect('/admin/products');
-};
+  Product.findByPk(id)
+    .then(product => {
+      product.title = title;
+      product.price = price;
+      product.imageUrl = imageUrl;
+      product.description = description;
 
-function deleteProduct(req, resp, next){
-  const { id } = req.params;
-  Product.delete(id);
-  resp.redirect('/admin/products');
+      return product.save()
+    })
+    .then(() => resp.redirect('/admin/products'))
+    .catch(err => console.error("ERROR", err));
+  };
+  
+  function deleteProduct(req, resp, next){
+    const { id } = req.params;
+    Product.findByPk(id)
+    .then(product => {
+      return product.destroy();
+    })
+    .then(() => resp.redirect('/admin/products'))
+    .catch(err => console.error("ERROR", err));
 }
 
 module.exports = {
