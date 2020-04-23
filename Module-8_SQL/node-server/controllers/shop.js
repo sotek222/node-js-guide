@@ -29,10 +29,10 @@ function getShopProducts(req, resp, next) {
 function getProductDetails(req, resp, next){
   const { id } = req.params;
   Product.findById(id)
-    .then(([rows, fields]) => {
+    .then(([[product]]) => {
       resp.render('shop/product-detail', {
-        product: rows[0],
-        pageTitle: `${rows[0].title} Details`,
+        product,
+        pageTitle: `${product.title} Details`,
         path: "/products"
       });
     })
