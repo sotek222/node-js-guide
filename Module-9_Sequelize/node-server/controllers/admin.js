@@ -35,15 +35,16 @@ function getProducts(req, resp, next) {
 };
 
 function getEditProduct(req, resp, next){
-  const { id } = req.params;
+  const { productId } = req.params;
   const editMode = req.query.edit;
 
   if(!editMode){
     resp.redirect('/');
   };
 
-  Product.findByPk(id)
-    .then(product => {
+  // Product.findByPk(id)
+  req.user.getProducts({where: { id: productId }})
+    .then(([product]) => {
       resp.render('admin/product-form', {
         product,
         pageTitle: `Edit ${product.title}`,
