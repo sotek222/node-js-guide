@@ -23,7 +23,8 @@ function postAddProduct(req, resp, next) {
 };
 
 function getProducts(req, resp, next) {
-  Product.findAll()
+  // Product.findAll()
+  req.user.getProducts()
   .then(products => {
     resp.render('admin/products', {
       products,
