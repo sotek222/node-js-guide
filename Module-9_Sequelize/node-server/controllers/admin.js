@@ -14,7 +14,7 @@ function postAddProduct(req, resp, next) {
   // Product.build is the same as new Product()
   // to then save it in the db we'd have to also call .save();
   // Product.create does both build and save
-  Product.create({ title, price, imageUrl, description})
+  Product.create({ title, price, imageUrl, description, userId: req.user.id })
   .then(() => resp.redirect('/admin/products'))
   .catch(err => console.errror("ERROR: ", err));
 };

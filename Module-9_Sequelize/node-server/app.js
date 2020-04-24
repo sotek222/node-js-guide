@@ -1,5 +1,7 @@
 // Database
 const sequelize = require('./util/db');
+const User = require('./models/user');
+const Product = require('./models/product');
 
 // Node Core Modules:
 const path = require('path');
@@ -24,17 +26,47 @@ app.use(express.static(path.join(rootDir, 'public')));
 // Parses all incoming requests with a body, and returns a parsed request.
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, resp, next) => {
+  User.findByPk(1)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.error("ERROR: ", err));
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(resourceNotFound);
 
+// Sets up the association between Products and Users
+// onDelete tells Sequelize that when a User is deleted
+// also delete the associated Products
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
+
 // This look at any models in the program
 // that use the define method and checks to see if the 
 // corresponding table exists and if it doesnt creates it
+// force: true drops tables everytime and rebuilds them 
+// but should not be used in prodution
 sequelize
   .sync()
-  .then(result => app.listen(3000))
+  // .sync({ force: true })
+  .then(result => User.findByPk(1))
+  .then(user => {
+    if(!user){
+      return User.create({name: "Matt", email: "matt@test.com"})
+    };
+
+    return user;
+  })
+  .then(user => {
+    console.log(user);
+    app.listen(3000);
+  })
   .catch(err => console.error("ERROR: ", err));
 
 
