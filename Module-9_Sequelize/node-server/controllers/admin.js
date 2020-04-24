@@ -14,7 +14,10 @@ function postAddProduct(req, resp, next) {
   // Product.build is the same as new Product()
   // to then save it in the db we'd have to also call .save();
   // Product.create does both build and save
-  Product.create({ title, price, imageUrl, description, userId: req.user.id })
+  // Product.create({ title, price, imageUrl, description, userId: req.user.id })
+
+  // createProduct is created by sequelize using the associations created before
+  req.user.createProduct({ title, price, imageUrl, description})
   .then(() => resp.redirect('/admin/products'))
   .catch(err => console.errror("ERROR: ", err));
 };
