@@ -1,7 +1,11 @@
 // Database
 const sequelize = require('./util/db');
+
+// Models
 const User = require('./models/user');
 const Product = require('./models/product');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cartItem');
 
 // Node Core Modules:
 const path = require('path');
@@ -40,11 +44,17 @@ app.use(shopRoutes);
 
 app.use(resourceNotFound);
 
+
+// Associations:
 // Sets up the association between Products and Users
 // onDelete tells Sequelize that when a User is deleted
 // also delete the associated Products
+
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product);
 
 
 // This look at any models in the program
