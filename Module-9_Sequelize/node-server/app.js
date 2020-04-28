@@ -72,11 +72,12 @@ sequelize
     if(!user){
       return User.create({name: "Matt", email: "matt@test.com"})
     };
-
     return user;
   })
   .then(user => {
-    console.log(user);
+    return user.createCart();
+  })
+  .then(cart => {
     app.listen(3000);
   })
   .catch(err => console.error("ERROR: ", err));
