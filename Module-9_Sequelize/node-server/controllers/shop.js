@@ -43,13 +43,14 @@ function getCart(req, resp, next) {
     .then(cart => {
       return cart.getProducts()
       .then(products => {
-        resp.render('shop/cart', {
-          pageTitle: "Your Cart",
-          path: "/cart",
-          cart: products,
-          totalPrice: 0
-          // TODO: make sure to add the total price dynamically
-        });
+        console.log("PRODS: ", products);
+        // resp.render('shop/cart', {
+        //   pageTitle: "Your Cart",
+        //   path: "/cart",
+        //   cartProducts: products,
+        //   totalPrice: 0
+        //   // TODO: make sure to add the total price dynamically
+        // });
       })
     })
     .catch(err => console.error("ERROR: ", err));
