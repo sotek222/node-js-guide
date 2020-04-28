@@ -52,9 +52,11 @@ app.use(resourceNotFound);
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
-// User.hasOne(Cart);
-// Cart.belongsTo(User);
-// Cart.belongsToMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+
 
 
 // This look at any models in the program
@@ -63,8 +65,8 @@ User.hasMany(Product);
 // force: true drops tables everytime and rebuilds them 
 // but should not be used in prodution
 sequelize
+// .sync({ force: true })
   .sync()
-  // .sync({ force: true })
   .then(result => User.findByPk(1))
   .then(user => {
     if(!user){
