@@ -1,5 +1,7 @@
 const Cart = require('../models/cart');
 const Product = require('../models/product');
+const CartItem = require('../models/cartItem');
+
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
   Product.findAll()
@@ -44,24 +46,41 @@ function getCart(req, resp, next) {
       return cart.getProducts()
       .then(products => {
         console.log("PRODS: ", products);
-        // resp.render('shop/cart', {
-        //   pageTitle: "Your Cart",
-        //   path: "/cart",
-        //   cartProducts: products,
-        //   totalPrice: 0
-        //   // TODO: make sure to add the total price dynamically
-        // });
+        resp.render('shop/cart', {
+          pageTitle: "Your Cart",
+          path: "/cart",
+          cartProducts: products,
+          totalPrice: 0
+        });
+          // TODO: make sure to add the total price dynamically
       })
     })
     .catch(err => console.error("ERROR: ", err));
 };
 
 function postCart(req, resp, next){
-  const { productId } = req.body; 
-  Product.findById(productId, product => {
-    Cart.addProduct(product.id, product.price);
-    resp.redirect('/cart');
-  });
+  const { productId } = req.body;
+  let fetchedCart;
+
+  req.user.getCart()
+  .then(cart => {
+    fetchedCart = cart;
+    return cart.getProducts({ where: { id: productId }});
+  })
+  .then(([product]) => {
+    let newQuantity = 1;
+
+    if(product){
+      newQuantity += product.cartItem.quantity
+    };
+
+    return Product.findByPk(productId)
+    .then(product => {
+      return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+    })
+    .catch(err => console.error("ERROR: ", err));
+  })
+  .catch(err => console.error("ERROR: ", err));
 };
 
 function deleteCartProduct(req, resp, next){

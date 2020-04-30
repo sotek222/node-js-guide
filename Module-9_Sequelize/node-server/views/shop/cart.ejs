@@ -9,7 +9,7 @@
         <% for(let product of cartProducts){ %>
           <li>
             <p>
-              X<%=product.qty%> <%= product.title %>: $<%= product.price * product.qty%> 
+              X<%=product.cartItem.quantity%> <%= product.title %>: $<%= product.price * product.cartItem.quantity%> 
             </p>
             <form action="/cart/delete/<%=product.id%>" method="POST">
               <button class="btn" type="submit">Delete</button>
