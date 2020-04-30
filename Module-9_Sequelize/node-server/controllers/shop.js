@@ -86,6 +86,22 @@ function postCart(req, resp, next){
   .catch(err => console.error("ERROR HERE: ", err));
 };
 
+function editCartProduct(req, resp, next){
+  const { id } = req.params;
+  const { quantity } = req.body;
+  req.user.getCart()
+    .then(cart => {
+      return cart.getProducts({ where: { id: id } })
+    })
+    .then(([product]) => {
+      product.cartItem.quantity = quantity;
+      return product.cartItem.save();
+    })
+    .then(cartItem => resp.redirect('/cart'))
+    .catch(err => console.error('ERROR: ', err));
+};
+
+
 function deleteCartProduct(req, resp, next){
   const { id } = req.params;
   let fetchedCart;
@@ -122,6 +138,7 @@ module.exports = {
   getIndexProducts,
   getCart,
   postCart,
+  editCartProduct,
   deleteCartProduct,
   getCheckout,
   getOrders,
