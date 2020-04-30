@@ -45,14 +45,16 @@ function getCart(req, resp, next) {
     .then(cart => {
       return cart.getProducts()
       .then(products => {
-        console.log("PRODS: ", products);
+        const totalPrice = products.reduce((acc, cv) => {
+          return acc += cv.cartItem.quantity * cv.price;
+        }, 0); 
+
         resp.render('shop/cart', {
           pageTitle: "Your Cart",
           path: "/cart",
           cartProducts: products,
-          totalPrice: 0
+          totalPrice
         });
-          // TODO: make sure to add the total price dynamically
       })
     })
     .catch(err => console.error("ERROR: ", err));
@@ -61,6 +63,7 @@ function getCart(req, resp, next) {
 function postCart(req, resp, next){
   const { productId } = req.body;
   let fetchedCart;
+  let newQuantity = 1;
 
   req.user.getCart()
   .then(cart => {
@@ -68,23 +71,30 @@ function postCart(req, resp, next){
     return cart.getProducts({ where: { id: productId }});
   })
   .then(([product]) => {
-    let newQuantity = 1;
 
     if(product){
       newQuantity += product.cartItem.quantity
+      return product;
     };
 
     return Product.findByPk(productId)
-    .then(product => {
-      return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
-    })
-    .catch(err => console.error("ERROR: ", err));
   })
-  .catch(err => console.error("ERROR: ", err));
+  .then(product => {
+    return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+  })
+  .then(data => resp.redirect('/cart'))
+  .catch(err => console.error("ERROR HERE: ", err));
 };
 
 function deleteCartProduct(req, resp, next){
-  const { id } = req.params;
+  const { productId } = req.params;
+
+  req.user.getCart()
+  .then(cart => {
+    return cart.getProducts({ where: { id: id } })
+  })
+  .catch(err => console.error('ERROR: ', err));
+
   Product.findById(id, foundProduct => {
     Cart.deleteById(id, foundProduct.price);
     resp.redirect('/cart');
