@@ -87,20 +87,19 @@ function postCart(req, resp, next){
 };
 
 function deleteCartProduct(req, resp, next){
-  const { productId } = req.params;
+  const { id } = req.params;
+  let fetchedCart;
 
   req.user.getCart()
   .then(cart => {
+    fetchedCart = cart;
     return cart.getProducts({ where: { id: id } })
   })
+  .then(([product]) => {
+    return product.cartItem.destroy();
+  })
+  .then(deletedCartItem => resp.redirect('/cart'))
   .catch(err => console.error('ERROR: ', err));
-
-  Product.findById(id, foundProduct => {
-    Cart.deleteById(id, foundProduct.price);
-    resp.redirect('/cart');
-  });
-
-
 };  
 
 function getCheckout(req, resp, next) {
