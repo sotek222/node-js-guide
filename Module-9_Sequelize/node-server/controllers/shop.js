@@ -45,9 +45,9 @@ function getCart(req, resp, next) {
     .then(cart => {
       return cart.getProducts()
       .then(products => {
-        const totalPrice = products.reduce((acc, cv) => {
+        const totalPrice = Math.round(products.reduce((acc, cv) => {
           return acc += cv.cartItem.quantity * cv.price;
-        }, 0); 
+        }, 0)); 
 
         resp.render('shop/cart', {
           pageTitle: "Your Cart",
