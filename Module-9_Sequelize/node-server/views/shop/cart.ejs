@@ -3,7 +3,10 @@
 
 <body>
   <%- include('../partials/navigation.ejs')%>
-  <h1>Your Cart:</h1>
+  <div class="centered">
+    <h1>Your Cart</h1>
+  </div>
+  <hr>
   <div class="cart centered">
     <% if(cartProducts.length){%> 
       <ul class="cart__item-list">
@@ -22,15 +25,17 @@
           </li>
         <%}%>
       </ul>
-      <h1>Total: $<%= totalPrice %></h1>
     </div>
-      <hr>
-      <div class="centered">
-        <form action="/checkout" method="POST">
-          <button class="btn" type="submit">Checkout</button>
-        </form>
-      </div>
+    <hr>
+    <div class="centered">
+      <h1>Total: $<%= totalPrice %></h1>
+      <form action="/checkout" method="POST">
+        <button class="btn" type="submit">Checkout</button>
+      </form>
+    </div>
     <% } else { %>
-      <h2>Nothing in Cart</h2>
+      <div class="centered">
+        <h2>Nothing in Cart</h2>
+      </div>
     <% } %>
   <%- include('../partials/end.ejs')%>
