@@ -1,13 +1,14 @@
 <%- include('../partials/head.ejs')%>
+<link rel="stylesheet" href="/css/cart.css">
 
 <body>
   <%- include('../partials/navigation.ejs')%>
-  <div>
-    <h1>Your Cart:</h1>
+  <h1>Your Cart:</h1>
+  <div class="cart centered">
     <% if(cartProducts.length){%> 
-      <ul>
+      <ul class="cart__item-list">
         <% for(let product of cartProducts){ %>
-          <li>
+          <li class="cart__item">
             <p>
               X<%=product.cartItem.quantity%> <%= product.title %>: $<%= product.price * product.cartItem.quantity%> 
             </p>
@@ -16,17 +17,20 @@
               <button class="btn" type="submit">Change Quantity</button>
             </form>
             <form action="/cart/delete/<%=product.id%>" method="POST">
-              <button class="btn" type="submit">Delete</button>
+              <button class="btn danger" type="submit">Delete</button>
             </form>
           </li>
         <%}%>
       </ul>
       <h1>Total: $<%= totalPrice %></h1>
-      <form action="/checkout" method="POST">
-        <button class="btn" type="submit">Checkout</button>
-      </form>
+    </div>
+      <hr>
+      <div class="centered">
+        <form action="/checkout" method="POST">
+          <button class="btn" type="submit">Checkout</button>
+        </form>
+      </div>
     <% } else { %>
       <h2>Nothing in Cart</h2>
     <% } %>
-  </div>
   <%- include('../partials/end.ejs')%>

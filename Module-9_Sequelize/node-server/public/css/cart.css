@@ -1,0 +1,17 @@
+.cart {
+  height: 100%;
+  align-items: center;
+}
+
+.cart__item-list {
+  list-style-type: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.cart__item {
+  margin: 0 1rem;
+  padding: 0;
+}
