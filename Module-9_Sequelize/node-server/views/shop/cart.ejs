@@ -13,7 +13,7 @@
               X<%=product.cartItem.quantity%> <%= product.title %>: $<%= product.price * product.cartItem.quantity%> 
             </p>
             <form action="/cart/<%=product.id%>/edit" method="POST">
-              <input type="number" name="quantity" value="<%=product.cartItem.quantity%>"/>
+              <input class="cart__quantity-input" type="number" name="quantity" value="<%=product.cartItem.quantity%>"/>
               <button class="btn" type="submit">Change Quantity</button>
             </form>
             <form action="/cart/delete/<%=product.id%>" method="POST">

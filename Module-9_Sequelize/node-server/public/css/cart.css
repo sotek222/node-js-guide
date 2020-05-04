@@ -15,3 +15,15 @@
   margin: 0 1rem;
   padding: 0;
 }
+
+.cart__quantity-input {
+  background-color: #fff;
+  color: #00695c;
+  border-style: inset;
+  border-color: #fff;
+  border-radius: 5px;
+  height: 1.5rem;
+  width: 2rem;
+  font-weight: bold;
+  font-size: 1em;
+}
