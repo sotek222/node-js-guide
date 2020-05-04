@@ -8,6 +8,7 @@ const {
   editCartProduct,
   deleteCartProduct,
   getCheckout, 
+  postCheckout,
   getOrders } = require('../controllers/shop');
 
 // GET => Index
@@ -35,6 +36,9 @@ Router.get("/orders", getOrders);
 
 // GET => Product Detail
 Router.get("/products/:id", getProductDetails);
+
+// POST => Checkout
+Router.post("/checkout", postCheckout);
 
 
 module.exports = Router;

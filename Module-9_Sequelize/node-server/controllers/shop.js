@@ -1,6 +1,4 @@
-const Cart = require('../models/cart');
 const Product = require('../models/product');
-const CartItem = require('../models/cartItem');
 
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
@@ -83,7 +81,7 @@ function postCart(req, resp, next){
     return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
   })
   .then(data => resp.redirect('/cart'))
-  .catch(err => console.error("ERROR HERE: ", err));
+  .catch(err => console.error("ERROR: ", err));
 };
 
 function editCartProduct(req, resp, next){
@@ -126,12 +124,48 @@ function getCheckout(req, resp, next) {
 };
 
 function getOrders(req, resp, next) {
-  resp.render('shop/orders', {
-    path: "/orders",
-    pageTitle: "Your Orders"
+  req.user.getOrders({ include: ['products']})
+  .then(orders => {
+    console.log("ORDERS", orders);
+    resp.render('shop/orders', {
+      orders,
+      path: "/orders",
+      pageTitle: "Your Orders"
+    })
   })
+  .catch(err => console.error("ERROR IN shop Controller: ", err));
 };
 
+function postCheckout(req, resp, next){
+  let fetchedCart;
+
+  req.user.getCart()
+  .then(cart => {
+    fetchedCart = cart;
+    return cart.getProducts()
+  })
+  .then(products => {
+    const totalPrice = Math.round(products.reduce((acc, cv) => {
+      return acc += cv.cartItem.quantity * cv.price;
+    }, 0)); 
+
+    return req.user.createOrder({ totalPrice: totalPrice })
+    .then(order => {
+      order.addProducts(products.map(product => {
+        product.orderItem = { quantity: product.cartItem.quantity }
+        return product;
+      }))
+    })
+    .catch(err => console.error("ERROR: ", err));
+  })
+  .then(result => {
+    return fetchedCart.setProducts(null);
+  })
+  .then(result => {
+    resp.redirect("/orders");
+  })
+  .catch(err => console.error("ERROR: ", err));
+};
 
 module.exports = {
   getShopProducts,
@@ -142,5 +176,6 @@ module.exports = {
   deleteCartProduct,
   getCheckout,
   getOrders,
-  getProductDetails
+  getProductDetails,
+  postCheckout
 };

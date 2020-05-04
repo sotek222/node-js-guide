@@ -82,9 +82,7 @@ sequelize
   .then(user => {
     return user.createCart();
   })
-  .then(cart => {
-    app.listen(3000);
-  })
-  .catch(err => console.error("ERROR: ", err));
+  .then(cart => app.listen(3000))
+  .catch(err => console.error("ERROR IN App.js: ", err));
 
 
