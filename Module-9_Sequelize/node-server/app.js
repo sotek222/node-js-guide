@@ -76,11 +76,9 @@ sequelize
   .then(user => {
     if(!user){
       return User.create({name: "Matt", email: "matt@test.com"})
+        .then(user => user.createCart())
     };
     return user;
-  })
-  .then(user => {
-    return user.createCart();
   })
   .then(cart => app.listen(3000))
   .catch(err => console.error("ERROR IN App.js: ", err));
