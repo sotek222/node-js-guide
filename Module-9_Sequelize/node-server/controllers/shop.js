@@ -126,7 +126,6 @@ function getCheckout(req, resp, next) {
 function getOrders(req, resp, next) {
   req.user.getOrders({ include: ['products']})
   .then(orders => {
-    console.log("ORDERS", orders);
     resp.render('shop/orders', {
       orders,
       path: "/orders",
