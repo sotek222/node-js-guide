@@ -1,0 +1,41 @@
+<%- include('../partials/head.ejs')%>
+<link rel="stylesheet" href="/css/cart.css">
+
+<body>
+  <%- include('../partials/navigation.ejs')%>
+  <div class="centered">
+    <h1>Your Cart</h1>
+  </div>
+  <hr>
+  <div class="cart centered">
+    <% if(cartProducts.length){%> 
+      <ul class="cart__item-list">
+        <% for(let product of cartProducts){ %>
+          <li class="cart__item">
+            <p>
+              X<%=product.cartItem.quantity%> <%= product.title %>: $<%= product.price * product.cartItem.quantity%> 
+            </p>
+            <form action="/cart/<%=product.id%>/edit" method="POST">
+              <input class="cart__quantity-input" type="number" name="quantity" value="<%=product.cartItem.quantity%>"/>
+              <button class="btn" type="submit">Change Quantity</button>
+            </form>
+            <form action="/cart/delete/<%=product.id%>" method="POST">
+              <button class="btn danger" type="submit">Delete</button>
+            </form>
+          </li>
+        <%}%>
+      </ul>
+    </div>
+    <hr>
+    <div class="centered">
+      <h1>Total: $<%= totalPrice %></h1>
+      <form action="/checkout" method="POST">
+        <button class="btn" type="submit">Checkout</button>
+      </form>
+    </div>
+    <% } else { %>
+      <div class="centered">
+        <h2>Nothing in Cart</h2>
+      </div>
+    <% } %>
+  <%- include('../partials/end.ejs')%>

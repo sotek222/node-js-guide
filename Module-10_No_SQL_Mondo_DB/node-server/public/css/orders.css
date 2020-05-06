@@ -1,0 +1,28 @@
+.orders {
+  height: 100%;
+  align-items: center;
+}
+
+.orders__item-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.orders__item {
+  width: 50%;
+  margin: 0.2rem 1rem;
+  border: 1px solid #fff;
+  box-shadow: 1px 1px 5px black;
+  border-radius: 3px;
+}
+
+.orders-products__item-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.orders-products__item {
+
+}

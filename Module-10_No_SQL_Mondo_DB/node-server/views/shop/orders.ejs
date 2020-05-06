@@ -1,0 +1,40 @@
+<%- include('../partials/head.ejs')%>
+<link rel="stylesheet" href="/css/orders.css">
+</head>
+
+<body>
+  <%- include('../partials/navigation.ejs')%>
+  <div class="centered">
+    <h1>Orders Page</h1>
+  </div>
+  <hr>
+  <%if(orders.length) {%>
+    <div class="orders centered">
+      <ul class="orders__item-list">
+        <%for(const order of orders){%>
+          <li class="orders__item">
+            <h1>Order # <%= order.id%></h1>
+            <span>
+              <b>Ordered On:</b>
+              <%=new Date(order.createdAt).toDateString()%>
+            </span>
+            <hr>
+            <ul class="orders-products__item-list">
+              <%order.products.forEach(({ title, price, orderItem: { quantity  }}) => { %>
+                <li class="orders-products__item">
+                  <p><%= title %> $<%= price %> X <%= quantity %> </p>
+                </li>
+              <% });%>
+              <hr>
+              <h2>Total Cost: $<%= order.totalPrice %></h2>
+            </ul>
+          </li>
+        <%};%>
+      </ul>
+    </div>
+  <%} else {%>
+    <div class="centered">
+      <h1>No Orders</h1>
+    </div>
+  <%};%>
+  <%- include('../partials/end.ejs')%>
