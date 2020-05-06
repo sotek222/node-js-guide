@@ -1,3 +1,6 @@
+// environment variables
+require('dotenv').config();
+
 // Database
 const sequelize = require('./util/db');
 
