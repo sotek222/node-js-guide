@@ -5,3 +5,6 @@ node_modules/
 package-lock.json
 
 text_files/
+
+# ignores .env files
+.env
