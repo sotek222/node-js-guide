@@ -29,16 +29,15 @@ function postAddProduct(req, resp, next) {
 };
 
 function getProducts(req, resp, next) {
-  // Product.findAll()
-  // req.user.getProducts()
-  // .then(products => {
-  //   resp.render('admin/products', {
-  //     products,
-  //     pageTitle: "Admin Products",
-  //     path: "/admin/products"
-  //   });
-  // })
-  // .catch(err => console.error("ERROR: ", err));
+  Product.fetchAll()
+  .then(products => {
+    resp.render('admin/products', {
+      products,
+      pageTitle: "Admin Products",
+      path: "/admin/products"
+    });
+  })
+  .catch(err => console.error("ERROR IN ADMIN GET PRODUCTS: ", err));
 };
 
 function getEditProduct(req, resp, next){

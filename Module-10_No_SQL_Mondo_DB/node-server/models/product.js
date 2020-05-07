@@ -9,7 +9,7 @@ class Product {
   }
 
   save(){
-    // This var store our connection to the DB 
+    // This var stores our connection to the DB 
     const db = getDB();
     // This method connects to a collection specified by a string
     // If it doesnt exist in the db it is created for us
@@ -21,28 +21,19 @@ class Product {
       throw err;
     });
   }
+
+  static fetchAll(){
+    const db = getDB();
+
+    return db.collection('products')
+    .find()
+    .toArray()
+    .then(products => {
+      return products;
+    })
+    .catch(err => console.error("ERROR IN FETCH ALL:", err));
+  }
 };
 
-// const Product = sequelize.define('product', {
-//   id: {
-//     type: Sequelize.INTEGER, 
-//     autoIncrement: true,
-//     allowNull: false,
-//     primaryKey: true
-//   },
-//   title: Sequelize.STRING,
-//   price: {
-//     type: Sequelize.DOUBLE,
-//     allowNull: false
-//   },
-//   imageUrl: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   },
-//   description: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   }
-// });
 
 module.exports = Product;
