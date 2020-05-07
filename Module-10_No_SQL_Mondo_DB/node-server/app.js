@@ -1,12 +1,15 @@
 // environment variables
 require('dotenv').config();
 
+// Mongo connection 
+const { mongoConnect } = require('./util/db');
+
 // Node Core Modules:
 const path = require('path');
 
 // Routes:
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+// const adminRoutes = require('./routes/admin');
+// const shopRoutes = require('./routes/shop');
 const resourceNotFound = require('./controllers/error');
 const rootDir = require('./util/path');
 
@@ -33,10 +36,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //     .catch(err => console.error("ERROR: ", err));
 // });
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+// app.use('/admin', adminRoutes);
+// app.use(shopRoutes);
 
 app.use(resourceNotFound);
 
-
+mongoConnect(() => {
+  app.listen(3000);
+})
 
