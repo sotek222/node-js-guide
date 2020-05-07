@@ -1,4 +1,4 @@
-cosnt { getDB } =  require('../util/db');
+const { getDB } =  require('../util/db');
 
 class Product {
   constructor(title, price, imageUrl, description){
@@ -9,7 +9,17 @@ class Product {
   }
 
   save(){
-
+    // This var store our connection to the DB 
+    const db = getDB();
+    // This method connects to a collection specified by a string
+    // If it doesnt exist in the db it is created for us
+   return db.collection('products')
+    .insertOne(this)
+    .then(result => console.log(result))
+    .catch(err => {
+      console.error("ERROR IN PRODUCT SAVE: ", error)
+      throw err;
+    });
   }
 };
 
