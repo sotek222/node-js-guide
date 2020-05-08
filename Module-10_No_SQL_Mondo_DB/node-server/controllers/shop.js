@@ -2,7 +2,7 @@ const Product = require('../models/product');
 
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
-  Product.findAll()
+  Product.fetchAll()
     .then(products => {
       resp.render('shop/index', {
         products,
@@ -14,8 +14,9 @@ function getIndexProducts(req, resp, next) {
 };
 
 function getShopProducts(req, resp, next) {
-  Product.findAll()
+  Product.fetchAll()
   .then(products => {
+    console.log("PRODS: ", products);
     resp.render('shop/products', {
       products,
       pageTitle: "Shop",
@@ -27,7 +28,7 @@ function getShopProducts(req, resp, next) {
 
 function getProductDetails(req, resp, next){
   const { id } = req.params;
-  Product.findByPk(id)
+  Product.findById(id)
     .then((product) => {
       resp.render('shop/product-detail', {
         product,

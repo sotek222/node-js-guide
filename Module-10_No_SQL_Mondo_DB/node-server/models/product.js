@@ -1,4 +1,5 @@
 const { getDB } =  require('../util/db');
+const mongodb = require('mongodb');
 
 class Product {
   constructor(title, price, imageUrl, description){
@@ -25,14 +26,25 @@ class Product {
   static fetchAll(){
     const db = getDB();
 
+    // invoking find with no args queries for all documents in a collection
     return db.collection('products')
     .find()
+    // be cautious calling toArray on return value of find 
+    // find can return thousands of documents
     .toArray()
     .then(products => {
       return products;
     })
     .catch(err => console.error("ERROR IN FETCH ALL:", err));
   }
+
+  static findById(id){
+    const db = getDB();
+    const objectId = new mongodb.ObjectID(id);
+
+    return db.collection('products').findOne({ _id: objectId })
+  }
+
 };
 
 
