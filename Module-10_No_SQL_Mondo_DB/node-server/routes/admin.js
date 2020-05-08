@@ -17,7 +17,7 @@ Router.post("/add-product", postAddProduct);
 Router.get("/products", getProducts);
 
 // GET => Product edit form
-Router.get("/edit-product/:productId", getEditProduct)
+Router.get("/edit-product/:productId", getEditProduct);
 
 // POST => Product edit
 Router.post("/edit-product/:id", postEditProduct);
