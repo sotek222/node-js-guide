@@ -25,3 +25,38 @@
 .product__description {
     text-align: center;
 }
+
+.product-detail {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "t t"
+    "i d"
+    "p .";
+    background-color: #4d4d4d;
+    width: 50%;
+    margin: 10px auto;
+}
+
+.product-detail__product__title {
+    grid-area: t;
+    justify-self: center;
+}
+
+.product-detail__product__image {
+    grid-area: i;
+
+}
+
+.product-detail__product__description {
+    grid-area: d;
+    justify-self: center;
+    align-self: start;
+    font-size: 1.5rem;
+}
+
+.product-detail__product__price {
+    grid-area: p;
+
+}
