@@ -11,7 +11,14 @@ function getAddProduct(req, resp, next) {
 
 function postAddProduct(req, resp, next) {
   const { title, imageUrl, description, price } = req.body;
-  const product = new Product(title, price, imageUrl, description);
+  const product = new Product(
+    title, 
+    price, 
+    imageUrl, 
+    description, 
+    req.user._id
+  );
+
   product.save()
   .then(result => resp.redirect('/admin/products'))
   .catch(err => console.errror("ERROR: ", err));
@@ -53,7 +60,7 @@ function postEditProduct(req, resp, next){
   const { title, price, imageUrl, description } = req.body;
   Product.findById(id)
   .then(foundProd => {
-    const product = new Product(title, price, imageUrl, description, foundProd._id);
+    const product = new Product(title, price, imageUrl, description, foundProd.userId, foundProd._id);
     return product.save();
   })
   .then(result => {

@@ -1,5 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
+const dns = require('dns');
 
+dns.setServers([
+  '8.8.8.8',
+]);
 // Use a private variable to store a connection to the db;
 let _db;
 

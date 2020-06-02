@@ -1,4 +1,4 @@
-const Product = require('./models/product');
+const User = require('./models/user');
 
 // environment variables
 require('dotenv').config();
@@ -29,14 +29,14 @@ app.use(express.static(path.join(rootDir, 'public')));
 // Parses all incoming requests with a body, and returns a parsed request.
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use((req, resp, next) => {
-//   User.findByPk(1)
-//     .then(user => {
-//       req.user = user;
-//       next();
-//     })
-//     .catch(err => console.error("ERROR: ", err));
-// });
+app.use((req, resp, next) => {
+  User.findById("5eb9b6ccda23ecadea5f279e")
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.error("ERROR: ", err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
