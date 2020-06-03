@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run open",
-    "open": "concurrently \"code .\" \"nodemon app.js\" \"sleepms 1000 && open http://localhost:3000/\""
+    "open": "concurrently \"code .\" \"nodemon app.js\" \"sleepms 1000 && open http://localhost:3000/\"",
+    "debug": "node inspect app.js"
   },
   "author": "Matthew Masiello",
   "license": "ISC",

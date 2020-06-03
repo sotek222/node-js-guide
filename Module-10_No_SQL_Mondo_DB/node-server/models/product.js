@@ -18,9 +18,6 @@ class Product {
     // If it doesnt exist in the db it is created for us
     if(this._id){
       const objectId = new mongodb.ObjectID(this._id);
-      
-      
-      console.log("found an id in the IF BLOCK");
 
       return db.collection('products')
       .updateOne(
@@ -36,7 +33,6 @@ class Product {
         }
       )
     } else {
-      console.log("Did not have an id in the ELSE BLOCK");
       return db.collection('products')
        .insertOne(this)
        .then(result => console.log(result))

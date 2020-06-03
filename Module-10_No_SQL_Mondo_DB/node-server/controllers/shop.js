@@ -2,7 +2,6 @@ const Product = require('../models/product');
 
 // Shop Controllers:
 function getIndexProducts(req, resp, next) {
-  console.log("INDEX: ", req.user)
   Product.fetchAll()
     .then(products => {
       resp.render('shop/index', {
@@ -61,28 +60,11 @@ function getCart(req, resp, next) {
 
 function postCart(req, resp, next){
   const { productId } = req.body;
-  let fetchedCart;
-  let newQuantity = 1;
-
-  req.user.getCart()
-  .then(cart => {
-    fetchedCart = cart;
-    return cart.getProducts({ where: { id: productId }});
-  })
-  .then(([product]) => {
-
-    if(product){
-      newQuantity += product.cartItem.quantity
-      return product;
-    };
-
-    return Product.findByPk(productId)
-  })
+  Product
+  .findById(productId)
   .then(product => {
-    return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+     return req.user.addToCart(product);
   })
-  .then(data => resp.redirect('/cart'))
-  .catch(err => console.error("ERROR: ", err));
 };
 
 function editCartProduct(req, resp, next){
