@@ -83,7 +83,6 @@ function editCartProduct(req, resp, next){
 
 };
 
-
 function deleteCartProduct(req, resp, next){
   const { productId } = req.params;
   req.user.removeFromCart(productId)
@@ -99,7 +98,7 @@ function getCheckout(req, resp, next) {
 };
 
 function getOrders(req, resp, next) {
-  req.user.getOrders({ include: ['products']})
+  req.user.getOrders()
   .then(orders => {
     resp.render('shop/orders', {
       orders,
@@ -107,38 +106,15 @@ function getOrders(req, resp, next) {
       pageTitle: "Your Orders"
     })
   })
-  .catch(err => console.error("ERROR IN shop Controller: ", err));
+  .catch(err => console.error("ERROR IN GET ORDERS: ", err));
 };
 
 function postCheckout(req, resp, next){
-  let fetchedCart;
+  const totalPrice = parseInt(req.body.totalPrice);
 
-  req.user.getCart()
-  .then(cart => {
-    fetchedCart = cart;
-    return cart.getProducts()
-  })
-  .then(products => {
-    const totalPrice = Math.round(products.reduce((acc, cv) => {
-      return acc += cv.cartItem.quantity * cv.price;
-    }, 0)); 
-
-    return req.user.createOrder({ totalPrice: totalPrice })
-    .then(order => {
-      order.addProducts(products.map(product => {
-        product.orderItem = { quantity: product.cartItem.quantity }
-        return product;
-      }))
-    })
-    .catch(err => console.error("ERROR: ", err));
-  })
-  .then(result => {
-    return fetchedCart.setProducts(null);
-  })
-  .then(result => {
-    resp.redirect("/orders");
-  })
-  .catch(err => console.error("ERROR: ", err));
+  req.user.addOrder(totalPrice)
+  .then(result => resp.redirect('/orders'))
+  .catch(err => console.error("ERROR POSTING ORDER: ", err));
 };
 
 module.exports = {

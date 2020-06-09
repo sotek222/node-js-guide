@@ -13,14 +13,14 @@
       <ul class="orders__item-list">
         <%for(const order of orders){%>
           <li class="orders__item">
-            <h1>Order # <%= order.id%></h1>
+            <h1>Order # <%= order._id%></h1>
             <span>
               <b>Ordered On:</b>
-              <%=new Date(order.createdAt).toDateString()%>
+              <%=new Date(order._id.getTimestamp()).toDateString()%>
             </span>
             <hr>
             <ul class="orders-products__item-list">
-              <% order.products.forEach(({ title, price, orderItem: { quantity } }) => { %>
+              <% order.items.forEach(({ title, price, quantity }) => { %>
                 <li class="orders-products__item">
                   <p><%= title %> $<%= price %> X <%= quantity %> </p>
                 </li>

@@ -50,9 +50,9 @@ class User {
   getCart(){
     const db = getDB();
 
-    const products = this.cart.items.map(prod => prod.productId)
+    const productIds = this.cart.items.map(prod => prod.productId)
     return db.collection('products')
-    .find({"_id": { $in: products } })
+    .find({"_id": { $in: productIds } })
     .toArray()
     .then(products => {
       return products.map(product => {
@@ -86,6 +86,45 @@ class User {
       .catch(err => console.error("ERROR IN USER SAVE: ", err));
     }
   }
+
+  addOrder(totalPrice){
+    const db = getDB();
+
+    this.getCart()
+    .then(products => {
+      const order = { 
+        items: products, 
+        user: {
+          _id: new mongodb.ObjectID(this._id),
+          username: this.username,
+          email: this.email
+        },
+        totalPrice
+      }
+      
+      return db.collection('orders')
+      .insertOne(order)
+      .then(result => {
+        this.cart = {items: []};
+        this.save();
+      })
+    });
+  }
+  
+  getOrders(){
+    const db = getDB();
+    const objectId = new mongodb.ObjectID(this._id);
+
+    return db.collection('orders').find({
+      user: {
+        _id: objectId,
+        username: this.username, 
+        email: this.email
+      }
+    })
+    .toArray();
+  }
+  
 
   static findById(id){
     const db = getDB();
