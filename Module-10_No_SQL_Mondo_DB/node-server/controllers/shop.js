@@ -90,13 +90,6 @@ function deleteCartProduct(req, resp, next){
   .catch(err => console.error('ERROR: ', err));
 };  
 
-function getCheckout(req, resp, next) {
-  resp.render('shop/checkout', {
-    path: "/checkout",
-    pageTitle: "Checkout"
-  });
-};
-
 function getOrders(req, resp, next) {
   req.user.getOrders()
   .then(orders => {
@@ -124,7 +117,6 @@ module.exports = {
   postCart,
   editCartProduct,
   deleteCartProduct,
-  getCheckout,
   getOrders,
   getProductDetails,
   postCheckout
