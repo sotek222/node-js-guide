@@ -90,7 +90,7 @@ class User {
   addOrder(totalPrice){
     const db = getDB();
 
-    this.getCart()
+    return this.getCart()
     .then(products => {
       const order = { 
         items: products, 
