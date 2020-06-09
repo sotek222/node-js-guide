@@ -10,16 +10,16 @@
   <div class="cart centered">
     <% if(cartProducts.length){%> 
       <ul class="cart__item-list">
-        <% for(let product of cartProducts){ %>
+        <% for(const product of cartProducts){ %>
           <li class="cart__item">
             <p>
-              X<%=product.cartItem.quantity%> <%= product.title %>: $<%= product.price * product.cartItem.quantity%> 
+              X<%=product.quantity%> <%= product.title %>: $<%= product.price * product.quantity%> 
             </p>
-            <form action="/cart/<%=product.id%>/edit" method="POST">
-              <input class="cart__quantity-input" type="number" name="quantity" value="<%=product.cartItem.quantity%>"/>
+            <form action="/cart/<%=product._id%>/edit" method="POST">
+              <input class="cart__quantity-input" type="number" name="quantity" value="<%=product.quantity%>"/>
               <button class="btn" type="submit">Change Quantity</button>
             </form>
-            <form action="/cart/delete/<%=product.id%>" method="POST">
+            <form action="/cart/delete/<%=product._id%>" method="POST">
               <button class="btn danger" type="submit">Delete</button>
             </form>
           </li>

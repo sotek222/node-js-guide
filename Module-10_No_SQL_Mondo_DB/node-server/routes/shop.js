@@ -26,7 +26,7 @@ Router.post("/cart", postCart);
 Router.post("/cart/:id/edit", editCartProduct);
 
 // POST => delete Cart Item
-Router.post("/cart/delete/:id", deleteCartProduct);
+Router.post("/cart/delete/:productId", deleteCartProduct);
 
 // GET => Checkout
 Router.get("/checkout", getCheckout);

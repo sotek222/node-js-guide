@@ -40,62 +40,54 @@ function getProductDetails(req, resp, next){
 
 function getCart(req, resp, next) {
   req.user.getCart()
-    .then(cart => {
-      return cart.getProducts()
-      .then(products => {
-        const totalPrice = Math.round(products.reduce((acc, cv) => {
-          return acc += cv.cartItem.quantity * cv.price;
-        }, 0)); 
+  .then(products => {
+    const totalPrice = Math.round(products.reduce((acc, cv) => {
+      return acc += cv.quantity * cv.price;
+    }, 0)); 
 
-        resp.render('shop/cart', {
-          pageTitle: "Your Cart",
-          path: "/cart",
-          cartProducts: products,
-          totalPrice
-        });
-      })
-    })
-    .catch(err => console.error("ERROR: ", err));
+    resp.render('shop/cart', {
+      pageTitle: "Your Cart",
+      path: "/cart",
+      cartProducts: products,
+      totalPrice
+    });
+
+  }).catch(err => console.error("ERROR: ", err));
 };
 
 function postCart(req, resp, next){
   const { productId } = req.body;
   Product
   .findById(productId)
-  .then(product => {
-     return req.user.addToCart(product);
-  })
+  .then(product => req.user.addToCart(product))
+  .then(result => resp.redirect('/cart'))
 };
 
 function editCartProduct(req, resp, next){
+
   const { id } = req.params;
-  const { quantity } = req.body;
-  req.user.getCart()
-    .then(cart => {
-      return cart.getProducts({ where: { id: id } })
-    })
-    .then(([product]) => {
-      product.cartItem.quantity = quantity;
-      return product.cartItem.save();
-    })
-    .then(cartItem => resp.redirect('/cart'))
+  const quantity  = parseInt(req.body.quantity);
+
+  const foundItem = req.user.cart.items.find(item => item.productId.toString() === id);
+
+  if(quantity <= 0){
+    req.user.removeFromCart(id)
+    .then(result => resp.redirect('/cart'))
     .catch(err => console.error('ERROR: ', err));
+  } else {
+    foundItem.quantity = quantity;
+    req.user.save()
+    .then(result => resp.redirect('/cart'))
+    .catch(err => console.error('ERROR: ', err));
+  }
+
 };
 
 
 function deleteCartProduct(req, resp, next){
-  const { id } = req.params;
-  let fetchedCart;
-
-  req.user.getCart()
-  .then(cart => {
-    fetchedCart = cart;
-    return cart.getProducts({ where: { id: id } })
-  })
-  .then(([product]) => {
-    return product.cartItem.destroy();
-  })
-  .then(deletedCartItem => resp.redirect('/cart'))
+  const { productId } = req.params;
+  req.user.removeFromCart(productId)
+  .then(result => resp.redirect('/cart'))
   .catch(err => console.error('ERROR: ', err));
 };  
 

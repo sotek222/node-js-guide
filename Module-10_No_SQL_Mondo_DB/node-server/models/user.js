@@ -15,7 +15,7 @@ class User {
     const foundProdIndex = this.cart.items.findIndex(prod => {
       // we need to use the toString() method here because both id properties 
       // are treated as objects in this case
-     return prod.productId.toString() === product._id.toString()
+     return prod.productId.toString() === product._id.toString();
     });
     const updatedItems = [...this.cart.items];
 
@@ -38,15 +38,53 @@ class User {
             cart: updatedCart
           }
         }
-      )
+      );
+  }
+
+  removeFromCart(productId){
+    const productToRemoveIndex = this.cart.items.findIndex(item => item.productId.toString() === productId);
+    this.cart.items.splice(productToRemoveIndex, 1);
+    return this.save();
+  }
+
+  getCart(){
+    const db = getDB();
+
+    const products = this.cart.items.map(prod => prod.productId)
+    return db.collection('products')
+    .find({"_id": { $in: products } })
+    .toArray()
+    .then(products => {
+      return products.map(product => {
+        return {
+          ...product, 
+          quantity: this.cart.items.find(item => item.productId.toString() === product._id.toString()).quantity,
+        }
+      })
+    });
   }
 
   save(){
     const db = getDB();
 
-    return db.collection('users')
-    .insertOne(this)
-    .catch(err => console.error("ERROR IN USER SAVE: ", err));
+    if(this._id){
+      const objectId = new mongodb.ObjectID(this._id);
+
+      return db.collection('users').updateOne(
+        { _id: objectId },
+        {
+          $set: {
+            username: this.username,
+            email: this.email,
+            cart: this.cart,
+          }
+        }
+      )
+    } else {
+      return db.collection('users')
+      .insertOne(this)
+      .catch(err => console.error("ERROR IN USER SAVE: ", err));
+    }
   }
 
   static findById(id){
