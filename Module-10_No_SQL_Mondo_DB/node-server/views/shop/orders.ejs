@@ -20,7 +20,7 @@
             </span>
             <hr>
             <ul class="orders-products__item-list">
-              <%order.products.forEach(({ title, price, orderItem: { quantity  }}) => { %>
+              <% order.products.forEach(({ title, price, orderItem: { quantity } }) => { %>
                 <li class="orders-products__item">
                   <p><%= title %> $<%= price %> X <%= quantity %> </p>
                 </li>
